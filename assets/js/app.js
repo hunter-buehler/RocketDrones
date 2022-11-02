@@ -1,96 +1,137 @@
-'use strict';
+/*------------------------------------------------------------------
+* Bootstrap Responsive Web Application Template
+* Email: heyalexluna@gmail.com
+* Version: 1.1
+* Last change: 2020-03-02
+* Author: Alexis Luna
+* Copyright 2019 Alexis Luna
+* Website: https://github.com/mralexisluna/bootstrap-responsive-web-application-template
+-------------------------------------------------------------------*/
+// Main JavaScripts
+(function ($) {
+	'use strict';
+	
+	// Side Nav
+	function sideNav() {
+		$('.side-nav .side-nav-menu li a').on('click', function(e) {
+			if ($(this).parent().hasClass("open")) {
 
-/* ===== Enable Bootstrap Popover (on element  ====== */
+				$(this).parent().children('.dropdown-menu').slideUp(200, function() {
+					$(this).parent().removeClass("open");
+				});
 
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
-})
+			} else {
+				$(this).parent().parent().children('li.open').children('.dropdown-menu').slideUp(200);
+				$(this).parent().parent().children('li.open').children('a').removeClass('open');
+				$(this).parent().parent().children('li.open').removeClass("open");
+				$(this).parent().children('.dropdown-menu').slideDown(200, function() {
+					$(this).parent().addClass("open");
+				});
+			}
+		});
+	}	
+	
+	// Side Nav Toogle
+	function sideNavToggle() {
+		$('.side-nav-toggle').on('click', function(e) {
+	        $('.app').toggleClass("is-collapsed");
+	        e.preventDefault();
+	    });
+	}	
 
-/* ==== Enable Bootstrap Alert ====== */
-var alertList = document.querySelectorAll('.alert')
-alertList.forEach(function (alert) {
-  new bootstrap.Alert(alert)
-});
+	// Side Panel Toogle
+	function sidePanelToggle() {
+		$('.side-panel-toggle').on('click', function(e) {
+	        $('.side-panel').toggleClass("side-panel-open");
+	        e.preventDefault();
+	    });
+	}	
 
+	// Chat Toggle
+	function chatToggle() {
+		$('.chat-toggle').on('click', function(e) {
+	        $('.chat').toggleClass("open");
+	        e.preventDefault();
+	    });
+	}	
 
-/* ===== Responsive Sidepanel ====== */
-const sidePanelToggler = document.getElementById('sidepanel-toggler'); 
-const sidePanel = document.getElementById('app-sidepanel');  
-const sidePanelDrop = document.getElementById('sidepanel-drop'); 
-const sidePanelClose = document.getElementById('sidepanel-close'); 
+	// Todo Toggle
+	function todoToggle() {
+		$('.todo-toggle').on('click', function(e) {
+	        $('.todo-wrapper').toggleClass("open");
+	        e.preventDefault();
+	    });
+	}	
 
-window.addEventListener('load', function(){
-	responsiveSidePanel(); 
-});
+	// Search Toggle 
+	function searchToggle() {
+		$('.search-toggle').on('click', function(e) {
+			$('.search-box, .search-input').toggleClass("active");
+			$('.search-input input').focus();
+			e.preventDefault();
+		});
+	}	
 
-window.addEventListener('resize', function(){
-	responsiveSidePanel(); 
-});
+	// Advance Search
+	function advanceSearch() {
+		$('.search-input input').on('keyup',function(){
+			if($(this).val().length > 0) {
+				$('.advanced-search').addClass("active");
+			} 
+			else {
+		       $('.advanced-search').removeClass("active");
+		    }
+		    $('.serach-text-bind').html($(this).val());
+		})	
+	} 
 
-
-function responsiveSidePanel() {
-    let w = window.innerWidth;
-	if(w >= 1200) {
-	    // if larger 
-	    //console.log('larger');
-		sidePanel.classList.remove('sidepanel-hidden');
-		sidePanel.classList.add('sidepanel-visible');
-		
-	} else {
-	    // if smaller
-	    //console.log('smaller');
-	    sidePanel.classList.remove('sidepanel-visible');
-		sidePanel.classList.add('sidepanel-hidden');
+	// Perfect Scroll Bar
+	function perfectSB() {
+		$('.scrollable').perfectScrollbar();
 	}
-};
 
-sidePanelToggler.addEventListener('click', () => {
-	if (sidePanel.classList.contains('sidepanel-visible')) {
-		console.log('visible');
-		sidePanel.classList.remove('sidepanel-visible');
-		sidePanel.classList.add('sidepanel-hidden');
-		
-	} else {
-		console.log('hidden');
-		sidePanel.classList.remove('sidepanel-hidden');
-		sidePanel.classList.add('sidepanel-visible');
+	//Card Portlet Refresh
+	function cardPortletCtrl() {
+		//card refresh
+		$('[data-toggle=card-refresh]').on('click',function(e) {
+			var cardRefreshSelector = $(this).parents('.card');
+		    cardRefreshSelector.addClass('card-refresh');
+		    window.setTimeout(function () {
+		        cardRefreshSelector.removeClass('card-refresh');
+		    }, 2000);
+		    e.preventDefault();
+		    e.stopPropagation();
+		});
+
+		//card delete
+		$('[data-toggle=card-delete]').on('click',function(e) {
+			var cardDeleteSelector = $(this).parents('.card');
+		    cardDeleteSelector.addClass('animated zoomOut');
+		    cardDeleteSelector.bind('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function () {
+		        cardDeleteSelector.remove();
+		    });
+		    e.preventDefault();
+		    e.stopPropagation();
+		});
 	}
-});
 
-
-
-sidePanelClose.addEventListener('click', (e) => {
-	e.preventDefault();
-	sidePanelToggler.click();
-});
-
-sidePanelDrop.addEventListener('click', (e) => {
-	sidePanelToggler.click();
-});
-
-
-
-/* ====== Mobile search ======= */
-const searchMobileTrigger = document.querySelector('.search-mobile-trigger');
-const searchBox = document.querySelector('.app-search-box');
-
-searchMobileTrigger.addEventListener('click', () => {
-
-	searchBox.classList.toggle('is-visible');
-	
-	let searchMobileTriggerIcon = document.querySelector('.search-mobile-trigger-icon');
-	
-	if(searchMobileTriggerIcon.classList.contains('fa-search')) {
-		searchMobileTriggerIcon.classList.remove('fa-search');
-		searchMobileTriggerIcon.classList.add('fa-times');
-	} else {
-		searchMobileTriggerIcon.classList.remove('fa-times');
-		searchMobileTriggerIcon.classList.add('fa-search');
+	function getYear() {
+		var d = new Date();
+		var y = d.getFullYear();
+		document.getElementById("year").innerHTML = y;
 	}
-	
-		
-	
-});
 
-
+	function init() {
+	    sideNav();
+	    sideNavToggle();
+	    sidePanelToggle();
+	    chatToggle();
+	    todoToggle();
+	    searchToggle();
+	    advanceSearch();
+	    perfectSB();
+	    cardPortletCtrl();
+		getYear();
+	}
+	init();
+})(jQuery);
