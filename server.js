@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 /* // Route to Homepage
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/static/Coach.html');
+  res.sendFile(__dirname + '/static/index.html');
 });
  */
   const port = 3000 // Port we will listen on
